@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!-- namespace：绑定对应的Java Mapper接口 全路径 -->
+<mapper namespace="com.example.allsystem.mapper.UserLoginMapper">
+
+    <!-- 在这里写 SQL 语句 -->
+    <!-- id 和 接口方法名一致；resultType 返回值类型（实体类） -->
+    <select id="selectUserById" resultType="com.example.allsystem.entity.UserLogin">
+        SELECT id, username, password, age
+        FROM user_login
+        WHERE id = #{id}
+    </select>
+</mapper>
