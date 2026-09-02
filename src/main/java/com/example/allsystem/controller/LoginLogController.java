@@ -28,7 +28,7 @@ public class LoginLogController {
     @PostMapping("/addLoginLog")
     public Result<String> addLoginLog(@RequestBody LoginLog loginLog) {
         boolean ok = loginLogService.save(loginLog);
-        return ok ? Result.success("新增成功") : Result.fail("新增失败");
+        return ok ? Result.success("新增成功") : Result.fail("新增失败!");
     }
 
     // 修改登录日志
