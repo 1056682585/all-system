@@ -35,8 +35,14 @@ public class UserLoginController {
     //新增
     @PostMapping("/addUser")
     public Result<String> addUser(@RequestBody UserLogin userLogin) {
+        // 1. 检查用户名是否已存在
+        UserLogin exist = userLoginService.getUserByUsername(userLogin.getUserName());
+        if (exist != null) {
+            return Result.fail("用户名已存在，不允许重复注册");
+        }
+        // 2. 不存在则新增
         boolean ok = userLoginService.save(userLogin);
-        return ok ? Result.success("新增成功") : Result.fail("新增失败");
+        return ok ? Result.success("注册成功") : Result.fail("注册失败");
     }
 
 
@@ -48,16 +54,21 @@ public class UserLoginController {
     }
 
     @DeleteMapping("/deleteUser")
-    public Result<String> deleteUser(@PathVariable Integer id) {
+    public Result<String> deleteUser(@RequestParam String id) {
         boolean ok = userLoginService.removeById(id);
         return ok ? Result.success("删除成功") : Result.fail("删除失败");
     }
 
     //登录验证
     @PostMapping("/login")
-    public Result<String> login(@RequestBody UserLogin userLogin) {
+    public Result<UserLogin> login(@RequestBody UserLogin userLogin) {
         log.info("userLogin:{}", userLogin);
-        boolean ok = userLoginService.login(userLogin.getUserName(), userLogin.getPassword());
-        return ok ? Result.success("登录成功") : Result.fail("用户名或密码错误");
+        UserLogin user = userLoginService.login(userLogin.getUserName(), userLogin.getPassword());
+        if (user == null) {
+            return Result.fail("用户名或密码错误");
+        }
+        // 密码不回传给前端
+        user.setPassword(null);
+        return Result.success("登录成功", user);
     }
 }

@@ -5,5 +5,8 @@ import com.example.allsystem.entity.UserLogin;
 
 public interface UserLoginService extends IService<UserLogin> {
 
-    public boolean login(String username, String rawPassword);
+    public UserLogin login(String username, String rawPassword);
+
+    // 根据用户名查询用户
+    public UserLogin getUserByUsername(String username);
 }
